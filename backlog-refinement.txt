@@ -1,0 +1,1 @@
+Allow a custom start and end number, keeping 1–100 as the default. Add a test for a custom range.
