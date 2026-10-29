@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FizzBuzz — study and interview guide</title>
+<style>
+:root{color-scheme:light;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#243044;background:#f3f5f8;font-size:17px;line-height:1.75}
+*{box-sizing:border-box}body{margin:0}nav{position:fixed;left:0;top:0;bottom:0;width:280px;overflow:auto;background:#15243b;padding:24px 20px;color:white}nav strong{display:block;font-size:21px;margin-bottom:18px}nav a{display:block;color:#d9e4f2;text-decoration:none;padding:7px 0;font-size:13px;line-height:1.5}nav a:hover{color:white;text-decoration:underline}main{margin:30px 35px 60px 315px;max-width:940px;background:white;padding:40px 55px;border-radius:14px;box-shadow:0 8px 35px #20324a0a}h1{font-size:35px;line-height:1.2;letter-spacing:-1px;color:#15243b}h2{margin-top:55px;padding-top:20px;border-top:2px solid #e5eaf1;font-size:25px;line-height:1.35;color:#173e6b;scroll-margin-top:20px}h3{font-size:19px;margin-top:30px;color:#173e6b}p{margin:18px 0}li{margin:10px 0}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88em;background:#eef2f6;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#16263b;color:#eef5ff;padding:20px;border-radius:9px;overflow-x:auto;line-height:1.7}pre code{background:none;color:inherit;padding:0;overflow-wrap:normal}a{color:#125ca3}button{border:0;border-radius:7px;padding:10px 16px;background:#1b66b0;color:white;cursor:pointer;font:inherit;font-size:14px}.toolbar{display:flex;align-items:center;gap:15px;color:#58677b;font-size:13px}
+@media(max-width:1000px){nav{position:static;width:auto;max-height:260px}main{margin:20px;padding:25px}}
+@media print{@page{size:A4;margin:16mm}nav,.toolbar{display:none}body{background:white;font-size:10.5pt}main{margin:0;padding:0;max-width:none;box-shadow:none}h1{font-size:25pt}h2{font-size:17pt;break-after:avoid;margin-top:25px}h3{break-after:avoid}pre{white-space:pre-wrap;background:#f0f3f7;color:#142238;border:1px solid #d9e0e8;break-inside:avoid}a{color:inherit;text-decoration:none}p,li{orphans:3;widows:3}}
+</style></head><body>
+<nav aria-label="Contents"><strong>FizzBuzz study guide</strong><a href="#section-2">1. What you are building</a><a href="#section-12">2. Your complete script</a><a href="#section-15">3. What def actually does</a><a href="#section-24">4. Conditions and arithmetic symbols</a><a href="#section-34">5. Return, strings and the order of checks</a><a href="#section-40">6. Trace four calls by hand</a><a href="#section-48">7. Main and the loop</a><a href="#section-56">8. Why the strange name check exists</a><a href="#section-62">9. How Python executes the file</a><a href="#section-74">10. Tests: imports and the class</a><a href="#section-84">11. Tests: capturing printed output</a><a href="#section-100">12. Running the tests</a><a href="#section-107">13. What Git and GitHub contribute</a><a href="#section-118">14. Pipeline: the whole journey</a><a href="#section-122">15. Every pipeline setting</a><a href="#section-141">16. How to inspect an actual run</a><a href="#section-152">17. The improvement you can implement live</a><a href="#section-160">18. Estimate and a short walkthrough</a><a href="#section-165">19. Likely questions and answers</a><a href="#section-205">20. Final practice checklist</a><a href="#section-216">References</a></nav>
+<main><div class="toolbar"><button onclick="window.print()">Print / Save as PDF</button><span>Read in order. Practise with the code open.</span></div><h1 id="section-0">Understand and defend your FizzBuzz pipeline</h1>
+<p>A beginner’s guide to the current project. Read in order; run the examples yourself. The examples describe the local files, not proof of a successful hosted pipeline run.</p>
+<h2 id="section-2">1. What you are building</h2>
+<p>A script is a file containing instructions that a program can execute. Python is the language those instructions use. The Python interpreter reads and runs them.</p>
+<p>FizzBuzz means: go through 1 to 100; print Fizz for multiples of 3, Buzz for multiples of 5, FizzBuzz for multiples of both, and the number otherwise. A multiple of 3 is something like 3, 6, 9 or 12: it divides by 3 without a remainder.</p>
+<p>The project has three layers:</p>
+<ol>
+<li>The function calculates the answer for one number.</li>
+<li>The main function repeats that calculation and prints the results.</li>
+<li>GitHub Actions runs automated checks and the script on a separate computer.</li>
+</ol>
+<p>Tests check the rules. A pipeline automates running those tests. A repository stores the files and their change history.</p>
+<h2 id="section-12">2. Your complete script</h2>
+<pre><code>def fizzbuzz(number: int) -&gt; str:
+    if number % 15 == 0:
+        return &quot;FizzBuzz&quot;
+    if number % 3 == 0:
+        return &quot;Fizz&quot;
+    if number % 5 == 0:
+        return &quot;Buzz&quot;
+    return str(number)
+
+
+def main() -&gt; None:
+    for number in range(1, 101):
+        print(fizzbuzz(number))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<p>Read the next sections with fizzbuzz.py open. Python uses indentation to decide which instructions belong together. In the actual file, top-level lines start at the left edge; each nested level uses four spaces. Blank lines separate sections for readability.</p>
+<h2 id="section-15">3. What def actually does</h2>
+<pre><code>def fizzbuzz(number: int) -&gt; str:</code></pre>
+<p><code>def</code> tells Python to create a function. A function is a named set of instructions you can use repeatedly. Defining it stores the instructions; it does not run its body yet.</p>
+<p><code>fizzbuzz</code> is the chosen name, not a built-in Python keyword. We could name it differently, but callers and imports would need updating too.</p>
+<p>The parentheses contain the inputs. <code>number</code> is a parameter: a local name for the value the caller provides. In <code>fizzbuzz(15)</code>, 15 is the argument, meaning the actual value supplied. Inside that call, number has the value 15.</p>
+<p><code>: int</code> is a type hint: this parameter is intended to receive an integer, such as 1 or 15. It does not convert the value or automatically reject other types.</p>
+<p><code>-&gt; str</code> is another type hint: the result is intended to be a string, meaning text. For example, <code>&quot;Fizz&quot;</code> and <code>&quot;7&quot;</code> are strings. The integer <code>7</code> and the string <code>&quot;7&quot;</code> are different types.</p>
+<p>The final colon starts the function’s indented body. The colon after number introduces its type hint; the colon at the end introduces a block. Same character, different positions and purposes.</p>
+<p>An interview explanation: “This function takes one integer and returns its FizzBuzz label as text. Type hints make that intention clear.”</p>
+<h2 id="section-24">4. Conditions and arithmetic symbols</h2>
+<pre><code>if number % 15 == 0:
+    return &quot;FizzBuzz&quot;</code></pre>
+<p><code>if</code> means execute the following indented block only when the condition is true. A condition produces a Boolean value: True or False.</p>
+<p><code>%</code> is modulo: it gives the remainder after division.</p>
+<pre><code>15 % 15  # 0: fifteen divides evenly by fifteen
+16 % 15  # 1: sixteen leaves a remainder of one
+6 % 3    # 0
+7 % 3    # 1</code></pre>
+<p><code>#</code> starts a comment. Python ignores the rest of that line; the text explains the example to a reader.</p>
+<p><code>==</code> compares two values for equality. It asks a question. A single <code>=</code> assigns a value to a variable; it does not compare values.</p>
+<pre><code>number = 15       # assign a value
+number == 15      # compare: True
+number % 15 == 0  # compare remainder with zero: True</code></pre>
+<p>Multiples of both 3 and 5 are multiples of 15. We check this first because 15 also passes the individual 3 and 5 checks. If the 3 check came first, 15 would return Fizz and never reach FizzBuzz.</p>
+<p>An equivalent condition would be <code>number % 3 == 0 and number % 5 == 0</code>. Here <code>and</code> requires both conditions to be true. Dividing by 15 is shorter for these fixed rules.</p>
+<h2 id="section-34">5. Return, strings and the order of checks</h2>
+<p><code>return &quot;FizzBuzz&quot;</code> sends a value back to the caller and immediately ends this function call. Double quotes mark text; they are not part of the output. Single quotes would also work.</p>
+<pre><code>if number % 3 == 0:
+    return &quot;Fizz&quot;
+if number % 5 == 0:
+    return &quot;Buzz&quot;
+return str(number)</code></pre>
+<p>If the first condition failed, Python continues to the 3 check, then the 5 check. If none match, it reaches the final return. <code>str(number)</code> converts the number to text. Every branch therefore returns the same kind of value.</p>
+<p>We do not need <code>else</code> or <code>elif</code> because a successful branch already returns. <code>elif</code> means “otherwise, if” and <code>else</code> means “otherwise.” They could express the same logic, but would not make this version faster in a meaningful way.</p>
+<p><code>return</code> and <code>print</code> are different. Returning gives a value to other code. Printing writes text to the output stream, usually the terminal. The calculation function returns; main prints. This lets tests inspect a result without needing to capture the terminal for every rule.</p>
+<h2 id="section-40">6. Trace four calls by hand</h2>
+<ol>
+<li><code>fizzbuzz(7)</code>: the remainders for 15, 3 and 5 are nonzero; return <code>&quot;7&quot;</code>.</li>
+<li><code>fizzbuzz(9)</code>: not divisible by 15; divisible by 3; return <code>&quot;Fizz&quot;</code>. Stop this call.</li>
+<li><code>fizzbuzz(10)</code>: fails 15 and 3; passes 5; return <code>&quot;Buzz&quot;</code>.</li>
+<li><code>fizzbuzz(15)</code>: passes the first check; return <code>&quot;FizzBuzz&quot;</code>. Never evaluate the later checks.</li>
+</ol>
+<p>Try explaining those four without looking at the code. Understanding the route through the checks matters more than memorizing the lines.</p>
+<h2 id="section-48">7. Main and the loop</h2>
+<pre><code>def main() -&gt; None:
+    for number in range(1, 101):
+        print(fizzbuzz(number))</code></pre>
+<p><code>main</code> is the name we chose for the function that coordinates execution. Python does not automatically run a function because it is named main.</p>
+<p>Empty parentheses mean no parameters are declared. <code>-&gt; None</code> says the function does not return a meaningful result. With no explicit return, a Python function returns None automatically.</p>
+<p><code>for</code> repeats an indented block for each item. <code>in</code> identifies the sequence being iterated over. The loop assigns each successive item to the name number.</p>
+<p><code>range(1, 101)</code> represents integers starting at 1 and stopping before 101. The end is excluded, so this includes 100. The comma separates the two arguments. The default step is 1. A range does not build a full list of all the numbers in memory.</p>
+<p><code>print(fizzbuzz(number))</code> has nested function calls. Work from inside to outside: calculate fizzbuzz(number), then pass the result to print. Print adds a newline by default, giving one result per line.</p>
+<p>The main body is indented four spaces. The loop body is indented eight spaces because it belongs inside both main and the loop.</p>
+<h2 id="section-56">8. Why the strange name check exists</h2>
+<pre><code>if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<p><code>__name__</code> is a name that Python supplies for each module. A module is a Python file that can be imported. The double underscores are part of this special name.</p>
+<p>When you run <code>python3 fizzbuzz.py</code> directly, Python gives this module the name <code>&quot;__main__&quot;</code>. The condition is true, so main() runs.</p>
+<p>When the tests use <code>from fizzbuzz import fizzbuzz, main</code>, the module name is <code>&quot;fizzbuzz&quot;</code>. The condition is false. Python loads the function definitions, but does not automatically print 100 lines.</p>
+<p><code>main()</code> calls the function; <code>def main()</code> defines it. This distinction is fundamental.</p>
+<h2 id="section-62">9. How Python executes the file</h2>
+<ol>
+<li>The interpreter reads the file from the top.</li>
+<li>It encounters def fizzbuzz and creates that function.</li>
+<li>It encounters def main and creates that function.</li>
+<li>It evaluates the name check at the bottom.</li>
+<li>When run directly, it calls main.</li>
+<li>Main loops through 100 integers.</li>
+<li>Each iteration calls fizzbuzz once and prints its returned string.</li>
+<li>The loop finishes, main finishes, and the process exits successfully.</li>
+</ol>
+<p>An unexpected unhandled exception would stop the process with a nonzero exit code. An exit code is the process’s success/failure signal to the operating system. Zero means success; nonzero means failure.</p>
+<h2 id="section-74">10. Tests: imports and the class</h2>
+<pre><code>import unittest
+from contextlib import redirect_stdout
+from io import StringIO
+from fizzbuzz import fizzbuzz, main</code></pre>
+<p><code>import</code> makes code from another module available. unittest is Python’s built-in testing library. <code>unittest.TestCase</code> means access the TestCase name inside the unittest module; the dot selects an attribute.</p>
+<p><code>from ... import ...</code> imports particular names so we can use them directly. contextlib and io are standard-library modules. The last line imports our functions from fizzbuzz.py. The comma separates the two names.</p>
+<pre><code>class FizzBuzzTests(unittest.TestCase):</code></pre>
+<p><code>class</code> defines a type that groups related behavior. Here it groups the tests. FizzBuzzTests is our chosen class name. The parentheses say it inherits from unittest.TestCase: it receives testing features such as assertEqual from that base class. The colon begins its body.</p>
+<pre><code>def test_number(self):
+    self.assertEqual(fizzbuzz(1), &quot;1&quot;)
+    self.assertEqual(fizzbuzz(98), &quot;98&quot;)</code></pre>
+<p>A function defined in a class is called a method. Test discovery recognizes method names beginning with test. <code>self</code> refers to the current test object; the test runner supplies it automatically. We do not call it ourselves with an argument.</p>
+<p><code>assertEqual(actual, expected)</code> checks equality and fails the test if the values differ. It is an assertion, not a print statement. The test runner reports the failure and which values differed.</p>
+<p>The four rule tests check ordinary numbers, Fizz, Buzz and FizzBuzz. Higher values such as 98, 99, 100 and 90 complement the smaller examples and check behavior near the range’s end.</p>
+<h2 id="section-84">11. Tests: capturing printed output</h2>
+<pre><code>output = StringIO()
+with redirect_stdout(output):
+    main()</code></pre>
+<p><code>=</code> assigns an object to the name output. <code>StringIO()</code> creates an in-memory text buffer: a place to collect text without creating a file on disk.</p>
+<p>Standard output, or stdout, is where print normally writes. <code>redirect_stdout(output)</code> temporarily sends that output to our buffer instead.</p>
+<p><code>with</code> begins a managed block. The redirection applies inside this block and is restored when the block ends, including if an exception occurs. That is why main is indented under with.</p>
+<pre><code>lines = output.getvalue().splitlines()</code></pre>
+<p><code>getvalue()</code> returns the captured text as one string. <code>splitlines()</code> turns it into a list of lines without newline characters. The dot calls a method on an object. These two method calls are chained: the result of the first becomes the receiver of the second.</p>
+<p>A list is an ordered collection. Its positions, called indexes, begin at zero.</p>
+<pre><code>self.assertEqual(len(lines), 100)
+self.assertEqual(lines[:15], [
+    &quot;1&quot;, &quot;2&quot;, &quot;Fizz&quot;, &quot;4&quot;, &quot;Buzz&quot;, &quot;Fizz&quot;, &quot;7&quot;, &quot;8&quot;,
+    &quot;Fizz&quot;, &quot;Buzz&quot;, &quot;11&quot;, &quot;Fizz&quot;, &quot;13&quot;, &quot;14&quot;, &quot;FizzBuzz&quot;,
+])
+self.assertEqual(lines[-1], &quot;Buzz&quot;)</code></pre>
+<p><code>len(lines)</code> counts the items. Square brackets create a list or select from one, depending on position. <code>lines[:15]</code> is a slice: take items from the beginning up to, but excluding, index 15. That gives the first 15 lines. <code>lines[-1]</code> selects the last item; negative indexes count backward from the end.</p>
+<p>The multiline list has matching opening and closing brackets. Commas separate items. The final trailing comma is allowed and makes editing easier. Python permits these line breaks inside brackets and parentheses.</p>
+<p>The expected first 15 values exercise every rule and their ordering. The last line must be Buzz because 100 is divisible by 5 but not by 3.</p>
+<pre><code>self.assertEqual(lines.count(&quot;Fizz&quot;), 27)
+self.assertEqual(lines.count(&quot;Buzz&quot;), 14)
+self.assertEqual(lines.count(&quot;FizzBuzz&quot;), 6)</code></pre>
+<p><code>count</code> counts exact matching list items, not substrings. FizzBuzz is not counted as Fizz.</p>
+<p>There are 33 multiples of 3 up to 100 and 6 multiples of 15: 33 minus 6 gives 27 Fizz lines. There are 20 multiples of 5: 20 minus 6 gives 14 Buzz lines. There are 6 FizzBuzz lines. The remaining 53 lines are ordinary numbers.</p>
+<p>Be precise about coverage: these tests check representative individual values, the first 15 output lines, the final line, total line count and label counts. They do not independently compare every later numeric line or launch the script as a separate process.</p>
+<h2 id="section-100">12. Running the tests</h2>
+<pre><code>python3 -m unittest discover -s tests -v</code></pre>
+<p>This is a terminal command, not Python source code. python3 selects the interpreter. <code>-m unittest</code> runs the unittest module as a program. <code>discover</code> asks it to find tests. <code>-s tests</code> starts searching in the tests directory. <code>-v</code> requests verbose output with each test’s name. The default discovery pattern finds files named test*.py.</p>
+<p>There are five test methods. Two assertions in a method do not count as two separately named tests. If an assertion fails, execution of that method normally stops at that assertion; the runner continues with other tests.</p>
+<p>The bottom name guard in test_fizzbuzz.py calls unittest.main() when that file runs directly. Discovery has its own runner and does not rely on that guarded call.</p>
+<p>Local commands, from the project folder:</p>
+<pre><code>python3 fizzbuzz.py
+python3 -m unittest discover -s tests -v</code></pre>
+<h2 id="section-107">13. What Git and GitHub contribute</h2>
+<p>Git tracks changes locally. GitHub hosts a remote copy. They are related, but different tools.</p>
+<p><code>git add</code> stages selected changes for the next commit. <code>git commit</code> records a local snapshot and a message. <code>git push</code> sends commits to the remote repository. Saving a file alone does not upload it or run GitHub Actions.</p>
+<p><code>.gitignore</code> contains patterns for files Git should normally leave untracked:</p>
+<ul>
+<li><code>__pycache__/</code>: Python-generated bytecode cache directories.</li>
+<li><code>*.py[cod]</code>: compiled Python files such as .pyc; the star matches a filename and [cod] matches one of those letters.</li>
+<li><code>.venv/</code>: a local virtual environment directory.</li>
+<li><code>.DS_Store</code>: Finder metadata created by macOS.</li>
+</ul>
+<p>Ignoring files does not remove ones that are already tracked. These patterns keep generated and machine-specific files out of the project history.</p>
+<h2 id="section-118">14. Pipeline: the whole journey</h2>
+<p>Push containing workflow → GitHub detects event → starts job on runner → checks out code → selects Python → runs tests → if successful, runs script → records logs and status.</p>
+<p>A workflow is the automation definition. A run is one execution of it. A job is a group of steps on a runner. A runner is the computer executing those steps. Our steps run sequentially in one job.</p>
+<p>The workflow file is <code>.github/workflows/ci.yml</code>. GitHub looks for workflows in this directory. YAML is a configuration format, not Python. Indentation represents nesting; use spaces. A colon separates a key from its value. A dash starts an item in a list.</p>
+<h2 id="section-122">15. Every pipeline setting</h2>
+<pre><code>name: FizzBuzz CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read</code></pre>
+<p><code>name</code> is the label shown in Actions. CI stands for continuous integration: automated checks around integrating code changes.</p>
+<p><code>on</code> declares triggering events. <code>push</code> responds to repository pushes. <code>pull_request</code> responds to supported pull-request activity, such as opening or updating a request. A pull request proposes merging changes. <code>workflow_dispatch</code> enables manual runs; GitHub requires the workflow to exist on the default branch for this trigger. Empty event values mean no extra filters were configured.</p>
+<p>The workflow has no branch filters. Updating a branch with an open pull request can therefore produce both a push run and a pull-request run.</p>
+<p><code>permissions</code> sets access for the automatically supplied GITHUB_TOKEN. <code>contents: read</code> permits reading repository contents; unspecified permissions become none. We need no write access to run this project. Private repository visibility and Actions settings still depend on the account.</p>
+<pre><code>jobs:
+  test-and-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:</code></pre>
+<p><code>jobs</code> holds the jobs. <code>test-and-run</code> is our chosen job identifier. <code>runs-on</code> selects a GitHub-hosted Ubuntu Linux runner image. <code>ubuntu-latest</code> can change over time; it is not a permanently fixed operating-system version. The five-minute timeout limits how long the job can run. It is not a five-minute repeating schedule.</p>
+<p><code>steps</code> holds the ordered list of actions and commands.</p>
+<pre><code>      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: &#x27;3.13&#x27;</code></pre>
+<p>Each dash begins one step. <code>name</code> describes it for the logs. <code>uses</code> runs a reusable action. <code>actions/checkout</code> places repository code on the runner. Starting a runner does not automatically place our source files there.</p>
+<p>The @ separates the action name from its version reference. v7 is the action’s version reference, not Python’s version. Major-version tags can move; pinning to a full reviewed commit SHA gives a more fixed dependency reference.</p>
+<p><code>actions/setup-python</code> selects the interpreter and puts it on the command path. <code>with</code> supplies inputs to that action. <code>&#x27;3.13&#x27;</code> is quoted so the version is a string. It selects a matching Python 3.13 release rather than pinning one exact patch release.</p>
+<pre><code>      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Run FizzBuzz
+        run: python fizzbuzz.py</code></pre>
+<p><code>run</code> executes a shell command on the runner. CI uses python because setup-python has selected it; our Mac commands use python3. The test command is otherwise the same.</p>
+<p>By default, later steps run only after earlier steps succeed. Failed tests return a nonzero exit code, causing this job to fail and skipping the final script step. If the script itself raises an unhandled exception, that step also fails. There is no continue-on-error setting to hide failures.</p>
+<p>The workflow currently reports through console logs and job status. It does not publish a downloadable test report. A failed check does not automatically prevent merging unless repository rules require it.</p>
+<p>This implements continuous integration and execution of the requested script. There is no production deployment target or deployment stage in this assessment.</p>
+<p>Reference for the settings: <a href="https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax">GitHub workflow syntax</a>.</p>
+<h2 id="section-141">16. How to inspect an actual run</h2>
+<ol>
+<li>Open the GitHub repository and its Actions tab.</li>
+<li>Select the FizzBuzz CI workflow and a specific run.</li>
+<li>Check its commit ID matches the code you want to demonstrate.</li>
+<li>Open the test-and-run job.</li>
+<li>Expand Run tests. Explain each test and the final OK or failure report.</li>
+<li>Expand Run FizzBuzz. Inspect the sequence and its last line, Buzz.</li>
+<li>If a step fails, investigate the first failing step and its error rather than assuming the application logic is wrong.</li>
+</ol>
+<p>A failure during checkout or Python setup is different from a failed assertion. Local passing tests do not prove a hosted run passed. A workflow file being present does not prove it has executed.</p>
+<h2 id="section-152">17. The improvement you can implement live</h2>
+<p>The current refinement file proposes a custom start and end number while retaining 1–100 as the default. Explain this as an optional future requirement, not something the assignment already demands.</p>
+<p>First change only main:</p>
+<pre><code>def main(start: int = 1, end: int = 100) -&gt; None:
+    for number in range(start, end + 1):
+        print(fizzbuzz(number))</code></pre>
+<p><code>= 1</code> and <code>= 100</code> inside the parameter list provide defaults. Calling main() behaves as before. Calling main(14, 16) uses the supplied values. <code>end + 1</code> preserves an inclusive end because range excludes its stop value.</p>
+<p>Then add this method inside the test class:</p>
+<pre><code>def test_custom_range(self):
+    output = StringIO()
+    with redirect_stdout(output):
+        main(14, 16)
+    self.assertEqual(output.getvalue().splitlines(), [&quot;14&quot;, &quot;FizzBuzz&quot;, &quot;16&quot;])</code></pre>
+<p>Run all tests and confirm the original behavior still passes. This change allows Python callers to choose a range; it does not yet accept terminal arguments. If they ask for <code>python fizzbuzz.py 14 16</code>, explain that argument parsing is another change. Clarify reversed ranges and supported input types before adding validation.</p>
+<h2 id="section-160">18. Estimate and a short walkthrough</h2>
+<p>Proposed estimate: 2 Fibonacci story points. The Fibonacci sequence begins 1, 2, 3, 5, 8, 13. Points express relative effort, complexity and uncertainty, not a fixed number of hours. The estimate includes the script, tests, automation and refinement note. It assumes GitHub access and needs calibration against the team’s reference stories. The assessment’s two-hour cap is a separate timebox.</p>
+<p>The brief asks for an estimate. It is currently absent from the short refinement file, so be ready to state it verbally; agree whether to put it back in the submission before presenting.</p>
+<p>A concise opening you can explain in your own words:</p>
+<p>“I used Python because the task is small and the code is readable. One function converts a number to its label; main prints the sequence. I check the shared multiple first. I used the standard-library test runner to avoid extra dependencies. GitHub Actions runs the tests before the script. The backlog proposes configurable bounds while preserving the default.”</p>
+<h2 id="section-165">19. Likely questions and answers</h2>
+<p>These are practice questions inferred from the brief, not confirmed questions.</p>
+<h3 id="section-167">Why Python?</h3>
+<p>It is readable, fits scripting and the role’s Python tooling, and includes a test framework. This project needs no external Python packages. Avoid claiming it is always better than PowerShell.</p>
+<h3 id="section-169">Why not print inside fizzbuzz?</h3>
+<p>Returning a value separates calculation from output. Callers and tests can reuse the calculation without capturing printed text.</p>
+<h3 id="section-171">Why 15 before 3?</h3>
+<p>15 satisfies both rules. Returning Fizz first would end the function too early.</p>
+<h3 id="section-173">Why not use three independent if statements that print?</h3>
+<p>Several conditions could be true for one number, producing several output lines. Here each successful condition returns exactly one result.</p>
+<h3 id="section-175">What happens if range ends at 100?</h3>
+<p>Python excludes the stop value, so the script would stop at 99. Our total-count and final-value tests help detect that mistake.</p>
+<h3 id="section-177">Are type hints input validation?</h3>
+<p>No. They describe intent for readers and tooling. The current caller only supplies positive integers in the requested range.</p>
+<h3 id="section-179">What happens for zero or a negative number?</h3>
+<p>The function has no validation. Zero returns FizzBuzz because its remainder is zero for 15; negative multiples follow the same divisibility checks. Main does not generate those inputs. Clarify the requirement before changing this.</p>
+<h3 id="section-181">Why unittest rather than pytest?</h3>
+<p>It is built into Python and sufficient here. Pytest could be a good team choice, but would add a dependency to this small project.</p>
+<h3 id="section-183">Why test output as well as the function?</h3>
+<p>The function could be correct while the loop prints the wrong number of lines, uses the wrong boundaries, or prints extra text. The output test checks that integration.</p>
+<h3 id="section-185">What do your tests not prove?</h3>
+<p>They do not exercise every possible integer or prove a successful hosted run. They test main directly, not a new operating-system process, and do not compare every numeric output line after the first 15. They give useful evidence within this small scope, not a proof of all behavior.</p>
+<h3 id="section-187">How would you demonstrate a failing test?</h3>
+<p>Temporarily change an expected value locally, run the suite and inspect the failure, then restore the correct value and rerun. Use a separate branch if demonstrating a red hosted run; avoid breaking the main branch just for a demonstration.</p>
+<h3 id="section-189">What happens if a test fails in Actions?</h3>
+<p>The test command exits nonzero, the job fails and the script step is skipped. The logs identify the assertion. Branch protection must separately require the status to block a merge.</p>
+<h3 id="section-191">Why GitHub Actions instead of Azure DevOps?</h3>
+<p>It matches the available GitHub repository and satisfies the choice allowed in the brief. The same test and script commands could run in Azure DevOps.</p>
+<h3 id="section-193">Is this a full deployment pipeline?</h3>
+<p>It is CI that runs the script and tests. There is no deployed service in the story, so there is no deployment stage.</p>
+<h3 id="section-195">How fast is the algorithm?</h3>
+<p>For a generalized range of n numbers, it does a fixed number of checks per number: O(n) time. The script itself uses O(1) additional working memory apart from output buffering. The output test stores n lines, so its captured output needs O(n) memory. With the required range fixed at 100, the actual work is bounded and tiny.</p>
+<h3 id="section-197">What would you improve?</h3>
+<p>Confirm whether users need custom bounds, then parameterize main and add the small range test. Keep the default output unchanged. Extra configuration is worthwhile only when it meets a need.</p>
+<h3 id="section-199">Why 2 points rather than 1 or 3?</h3>
+<p>More than the arithmetic is included: tests, repository work and pipeline setup. The implementation is small and understood, so 2 is a reasonable proposal. Team calibration and uncertainty about access can change that estimate.</p>
+<h3 id="section-201">What would you investigate if CI passed locally but failed remotely?</h3>
+<p>Compare the exact commit, interpreter version, working directory, filenames and paths, then read the first failing step. Separate missing access or runner setup from application/test failures. Reproduce the command locally before changing code blindly.</p>
+<h3 id="section-203">What about infrastructure, containers and Databricks?</h3>
+<p>They are relevant to the broader role, but this script needs none of them to satisfy the story. Explain how you would apply the same practices to larger systems without claiming this project provisions infrastructure.</p>
+<h2 id="section-205">20. Final practice checklist</h2>
+<ul>
+<li>Explain every line of fizzbuzz.py without reading this guide.</li>
+<li>Predict results for 1, 3, 5, 15, 98, 99 and 100.</li>
+<li>Explain return versus print, and definition versus call.</li>
+<li>Run tests and explain each assertion.</li>
+<li>Explain every pipeline step and the failure path.</li>
+<li>Demonstrate an actual hosted run if one is available.</li>
+<li>State the estimate and implement the custom-range change in practice.</li>
+<li>Prepare real examples of troubleshooting, collaboration and ownership for the panel.</li>
+</ul>
+<h2 id="section-216">References</h2>
+<p>These official references support the language and workflow explanations; the project files determine what this particular implementation does.</p>
+<ul>
+<li><a href="https://docs.python.org/3.13/tutorial/controlflow.html">Python 3.13 control flow: functions, return, range and annotations</a></li>
+<li><a href="https://docs.python.org/3.13/library/unittest.html">Python unittest</a></li>
+<li><a href="https://docs.python.org/3.13/library/contextlib.html#contextlib.redirect_stdout">Python redirect_stdout</a></li>
+<li><a href="https://docs.python.org/3.13/library/io.html#io.StringIO">Python StringIO</a></li>
+<li><a href="https://docs.python.org/3.13/library/__main__.html">Python main-module convention</a></li>
+<li><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax">GitHub workflow syntax</a></li>
+</ul></main></body></html>
