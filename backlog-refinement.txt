@@ -1,1 +1,5 @@
+Estimate: 2 story points.
+Covers the script, tests, pipeline setup and documentation.
+Subject to team calibration.
+
 Allow a custom start and end number, keeping 1–100 as the default. Add a test for a custom range.
